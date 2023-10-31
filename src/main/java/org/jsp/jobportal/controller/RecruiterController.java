@@ -1,5 +1,7 @@
 package org.jsp.jobportal.controller;
 
+import java.io.UnsupportedEncodingException;
+
 import org.jsp.jobportal.dto.Recruiter;
 import org.jsp.jobportal.service.RecruiterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import jakarta.mail.MessagingException;
 
 @Controller
 @RequestMapping("/recruiter")
@@ -28,7 +32,7 @@ public class RecruiterController {
 	}
 	
 	@PostMapping("/signup")
-	public String signup(Recruiter recruiter,ModelMap map)
+	public String signup(Recruiter recruiter,ModelMap map) throws UnsupportedEncodingException, MessagingException
 	{
 		return recruiterService.signup(recruiter,map);
 	}

@@ -17,6 +17,24 @@ public class Recruiter {
 	String gender;
 	String companyname;
 	String companylocation;
+	int otp;
+	boolean verfied;
+	
+	public int getOtp() {
+		return otp;
+	}
+
+	public void setOtp(int otp) {
+		this.otp = otp;
+	}
+
+	public boolean isVerfied() {
+		return verfied;
+	}
+
+	public void setVerfied(boolean verfied) {
+		this.verfied = verfied;
+	}
 
 	public int getId() {
 		return id;
