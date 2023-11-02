@@ -61,4 +61,25 @@ public class UserService {
 		}
 	}
 
+	public String login(String email, String password, ModelMap map) {
+		User user = userDao.findByEmail(email);
+		if (user == null) {
+			map.put("fail", "Invalid Email");
+			return "UserLogin";
+		} else {
+			if (user.getPassword().equals(password)) {
+				if (user.isVerified()) {
+					map.put("pass", "Login Succcess");
+					return "UserHome";
+				} else {
+					map.put("fail", "Account Not Verified");
+					return "UserLogin";
+				}
+			} else {
+				map.put("fail", "Invalid Password");
+				return "UserLogin";
+			}
+		}
+	}
+
 }

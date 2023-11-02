@@ -42,4 +42,10 @@ public class UserController {
 	{
 		return userService.verifyotp(id,otp,map);
 	}
+	
+	@PostMapping("/login")
+	public String login(@RequestParam String email,@RequestParam String password,ModelMap map)
+	{
+		return userService.login(email,password,map);
+	}
 }
