@@ -7,9 +7,10 @@
 <title>User Login</title>
 </head>
 <body>
-${pass}${fail }
+${pass}${fail }  
 	<h1>User Login</h1>
 	<div class="container">
+	<form action="/user/login" method="post">
 		<table>
 			<tr>
 				<th>Email:</th>
@@ -26,6 +27,7 @@ ${pass}${fail }
 				<th colspan="2"><button>Login</button></th>
 			</tr>
 		</table>
+		</form>
 		<hr>
 		<a href="/user/signup"><button>Create Account</button></a>
 	</div>

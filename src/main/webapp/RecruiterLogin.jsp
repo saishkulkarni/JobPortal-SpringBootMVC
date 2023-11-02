@@ -10,7 +10,7 @@
 ${pass}${fail}
 	<h1>Recruiter Login</h1>
 	<div class="container">
-	<form>
+	<form action="/recruiter/login" method="post">
 		<table>
 			<tr>
 				<th>Email:</th>

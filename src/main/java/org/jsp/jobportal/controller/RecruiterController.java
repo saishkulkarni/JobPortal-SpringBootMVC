@@ -43,5 +43,10 @@ public class RecruiterController {
 	{
 		return recruiterService.verifyotp(id,otp,map);
 	}
-
+	
+	@PostMapping("/login")
+	public String login(@RequestParam String email,@RequestParam String password,ModelMap map)
+	{
+		return recruiterService.login(email,password,map);
+	}
 }

@@ -57,4 +57,25 @@ public class RecruiterService {
 		}
 	}
 
+	public String login(String email, String password, ModelMap map) {
+		Recruiter recruiter = recruiterDao.findByEmail(email);
+		if (recruiter == null) {
+			map.put("fail", "Invalid Email");
+			return "RecruiterLogin";
+		} else {
+			if (recruiter.getPassword().equals(password)) {
+				if (recruiter.isVerfied()) {
+					map.put("pass", "Login Succcess");
+					return "RecruiterHome";
+				} else {
+					map.put("fail", "Account Not Verified");
+					return "RecruiterLogin";
+				}
+			} else {
+				map.put("fail", "Invalid Password");
+				return "RecruiterLogin";
+			}
+		}
+	}
+
 }
