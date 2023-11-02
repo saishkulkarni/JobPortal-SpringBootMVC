@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.mail.MessagingException;
@@ -35,6 +36,12 @@ public class RecruiterController {
 	public String signup(Recruiter recruiter,ModelMap map) throws UnsupportedEncodingException, MessagingException
 	{
 		return recruiterService.signup(recruiter,map);
+	}
+	
+	@PostMapping("/verify-otp")
+	public String verifyOtp(@RequestParam int id,@RequestParam int otp,ModelMap map)
+	{
+		return recruiterService.verifyotp(id,otp,map);
 	}
 
 }

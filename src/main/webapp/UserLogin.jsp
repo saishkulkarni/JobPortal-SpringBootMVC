@@ -7,6 +7,7 @@
 <title>User Login</title>
 </head>
 <body>
+${pass}${fail }
 	<h1>User Login</h1>
 	<div class="container">
 		<table>

@@ -8,7 +8,7 @@
 </head>
 <body>
 ${pass}${fail }
-<form action="/recruiter/verify-otp" method="post">
+<form action="/user/verify-otp" method="post">
 <input type="text" name="id" value="${id}" hidden="hidden">
 Enter OTP:<input type="text" name="otp"><button>Submit</button>
 </form>

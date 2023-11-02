@@ -7,6 +7,7 @@
 <title>Recruiter Login</title>
 </head>
 <body>
+${pass}${fail}
 	<h1>Recruiter Login</h1>
 	<div class="container">
 	<form>

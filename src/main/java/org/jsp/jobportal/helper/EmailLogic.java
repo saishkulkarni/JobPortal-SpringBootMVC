@@ -3,6 +3,7 @@ package org.jsp.jobportal.helper;
 import java.io.UnsupportedEncodingException;
 
 import org.jsp.jobportal.dto.Recruiter;
+import org.jsp.jobportal.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -28,5 +29,15 @@ public class EmailLogic {
 		
 		mailSender.send(message);
 	}
-
+	public void sendOtp(User user) throws MessagingException, UnsupportedEncodingException {
+		MimeMessage message=mailSender.createMimeMessage();
+		MimeMessageHelper helper=new MimeMessageHelper(message);
+		
+		helper.setFrom("saishkulkarni7@gmail.com","Job Portal");
+		helper.setTo(user.getEmail());
+		helper.setSubject("Verify OTP");
+		helper.setText("Your Otp is : "+user.getOtp());
+		
+		mailSender.send(message);
+	}
 }

@@ -1,0 +1,64 @@
+package org.jsp.jobportal.service;
+
+import java.io.IOException;
+import java.util.Random;
+
+import org.jsp.jobportal.dao.UserDao;
+import org.jsp.jobportal.dto.User;
+import org.jsp.jobportal.helper.EmailLogic;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.multipart.MultipartFile;
+
+import jakarta.mail.MessagingException;
+
+@Service
+public class UserService {
+
+	@Autowired
+	UserDao userDao;
+
+	@Autowired
+	EmailLogic emailLogic;
+
+	public String signup(User user, MultipartFile doc, ModelMap map) throws IOException, MessagingException {
+		byte[] resume = new byte[doc.getInputStream().available()];
+		doc.getInputStream().read(resume);
+		user.setResume(resume);
+		User user1 = userDao.findByEmail(user.getEmail());
+		User user2 = userDao.findByMobile(user.getMobile());
+		if (user1 == null && user2 == null) {
+			int otp = new Random().nextInt(100000, 999999);
+			user.setOtp(otp);
+			// emailLogic.sendOtp(user);
+			userDao.save(user);
+			map.put("pass", "Otp Sent");
+			map.put("id", user.getId());
+			return "UserOtp";
+		} else {
+			map.put("fail", "Email or Mobile is Repeated");
+			return "UserSignup";
+		}
+	}
+
+	public String verifyotp(int id, int otp, ModelMap map) {
+		User user = userDao.findById(id);
+		if (user == null) {
+			map.put("fail", "Invalid ID");
+			return "Home";
+		} else {
+			if (user.getOtp() == otp) {
+				user.setVerified(true);
+				userDao.save(user);
+				map.put("pass", "Account verified Success");
+				return "UserLogin";
+			} else {
+				map.put("fail", "Invalid OTP");
+				map.put("id", id);
+				return "UserOtp";
+			}
+		}
+	}
+
+}

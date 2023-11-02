@@ -23,4 +23,8 @@ public class RecruiterDao {
 		recruiterRepository.save(recruiter);
 	}
 
+	public Recruiter findById(int id) {
+		return recruiterRepository.findById(id).orElse(null);
+	}
+
 }
