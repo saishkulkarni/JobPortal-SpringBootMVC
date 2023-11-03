@@ -68,3 +68,4 @@ public class RecruiterController {
 		return recruiterService.resetPassword(password,id,otp,map);
 	}
 }
+   
