@@ -21,7 +21,7 @@ ${pass}${fail}
 				<td><input type="password" name="password"></td>
 			</tr>
 			<tr>
-				<th colspan="2"><a href="#">Forgot Password?</a></th>
+				<th colspan="2"><a href="/recruiter/forgot-password">Forgot Password?</a></th>
 			</tr>
 			<tr>
 				<th colspan="2"><button>Login</button></th>

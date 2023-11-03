@@ -4,12 +4,13 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Enter Email</title>
 </head>
 <body>
-<h1>Recruiter Home</h1>
-<button>Add Job</button>
-<button>See Applications Job</button>
-<button>Logout</button>
+${fail }${pass }
+<form action="/recruiter/forgot-password" method="post">
+Enter Email:<input type="text" name="email">
+<button>Submit</button>
+</form>
 </body>
 </html>

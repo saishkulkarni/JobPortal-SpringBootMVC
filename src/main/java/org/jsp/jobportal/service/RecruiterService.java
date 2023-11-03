@@ -78,4 +78,38 @@ public class RecruiterService {
 		}
 	}
 
+	public String forgotPassword(String email, ModelMap map) {
+		Recruiter recruiter=recruiterDao.findByEmail(email);
+		if(recruiter==null)
+		{
+			map.put("fail", "Email Doesnot Exist");
+			return "RecruiterEmail";
+		}
+		else {
+			int otp = new Random().nextInt(100000, 999999);
+			recruiter.setOtp(otp);
+			// emailLogic.sendOtp(recruiter);
+			recruiterDao.save(recruiter);
+			map.put("pass", "Otp Sent");
+			map.put("id", recruiter.getId());
+			return "RecruiterPassword";
+		}
+	}
+
+	public String resetPassword(String password, int id, int otp, ModelMap map) {
+		Recruiter recruiter=recruiterDao.findById(id);
+		if(recruiter.getOtp()==otp)
+		{
+			recruiter.setPassword(password);
+			recruiterDao.save(recruiter);
+			map.put("pass", "Password Reset Success");
+			return "RecruiterLogin";
+		}
+		else {
+			map.put("fail", "Invalid OTP");
+			map.put("id", id);
+			return "RecruiterPassword";
+		}
+	}
+
 }

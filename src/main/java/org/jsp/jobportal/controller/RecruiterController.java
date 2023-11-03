@@ -49,4 +49,22 @@ public class RecruiterController {
 	{
 		return recruiterService.login(email,password,map);
 	}
+	
+	@GetMapping("/forgot-password")
+	public String loadEnterEmail()
+	{
+		return "RecruiterEmail";
+	}
+	
+	@PostMapping("/forgot-password")
+	public String sendResetOtp(@RequestParam String email,ModelMap map)
+	{
+		return recruiterService.forgotPassword(email,map);
+	}
+	
+	@PostMapping("/reset-password")
+	public String resetPassword(@RequestParam String password,@RequestParam int id,@RequestParam int otp,ModelMap map)
+	{
+		return recruiterService.resetPassword(password,id,otp,map);
+	}
 }
