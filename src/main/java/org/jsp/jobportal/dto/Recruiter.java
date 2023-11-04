@@ -1,9 +1,14 @@
 package org.jsp.jobportal.dto;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Recruiter {
@@ -19,7 +24,18 @@ public class Recruiter {
 	String companylocation;
 	int otp;
 	boolean verfied;
-	
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	List<Job> jobs;
+
+	public List<Job> getJobs() {
+		return jobs;
+	}
+
+	public void setJobs(List<Job> jobs) {
+		this.jobs = jobs;
+	}
+
 	public int getOtp() {
 		return otp;
 	}

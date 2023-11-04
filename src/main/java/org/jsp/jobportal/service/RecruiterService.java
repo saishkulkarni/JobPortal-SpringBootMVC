@@ -1,9 +1,12 @@
 package org.jsp.jobportal.service;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.jsp.jobportal.dao.RecruiterDao;
+import org.jsp.jobportal.dto.Job;
 import org.jsp.jobportal.dto.Recruiter;
 import org.jsp.jobportal.helper.EmailLogic;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class RecruiterService {
@@ -57,7 +61,7 @@ public class RecruiterService {
 		}
 	}
 
-	public String login(String email, String password, ModelMap map) {
+	public String login(String email, String password, ModelMap map, HttpSession session) {
 		Recruiter recruiter = recruiterDao.findByEmail(email);
 		if (recruiter == null) {
 			map.put("fail", "Invalid Email");
@@ -65,6 +69,7 @@ public class RecruiterService {
 		} else {
 			if (recruiter.getPassword().equals(password)) {
 				if (recruiter.isVerfied()) {
+					session.setAttribute("recruiter", recruiter);
 					map.put("pass", "Login Succcess");
 					return "RecruiterHome";
 				} else {
@@ -79,13 +84,11 @@ public class RecruiterService {
 	}
 
 	public String forgotPassword(String email, ModelMap map) {
-		Recruiter recruiter=recruiterDao.findByEmail(email);
-		if(recruiter==null)
-		{
+		Recruiter recruiter = recruiterDao.findByEmail(email);
+		if (recruiter == null) {
 			map.put("fail", "Email Doesnot Exist");
 			return "RecruiterEmail";
-		}
-		else {
+		} else {
 			int otp = new Random().nextInt(100000, 999999);
 			recruiter.setOtp(otp);
 			// emailLogic.sendOtp(recruiter);
@@ -97,19 +100,32 @@ public class RecruiterService {
 	}
 
 	public String resetPassword(String password, int id, int otp, ModelMap map) {
-		Recruiter recruiter=recruiterDao.findById(id);
-		if(recruiter.getOtp()==otp)
-		{
+		Recruiter recruiter = recruiterDao.findById(id);
+		if (recruiter.getOtp() == otp) {
 			recruiter.setPassword(password);
 			recruiterDao.save(recruiter);
 			map.put("pass", "Password Reset Success");
 			return "RecruiterLogin";
-		}
-		else {
+		} else {
 			map.put("fail", "Invalid OTP");
 			map.put("id", id);
 			return "RecruiterPassword";
 		}
+	}
+
+	public String addJob(Job job, HttpSession session, ModelMap map) {
+		Recruiter recruiter = (Recruiter) session.getAttribute("recruiter");
+
+		List<Job> list = recruiter.getJobs();
+		if (list == null)
+			list = new ArrayList<Job>();
+		list.add(job);
+
+		recruiter.setJobs(list);
+		recruiterDao.save(recruiter);
+		session.setAttribute("recruiter", recruiter);
+		map.put("pass", "Job Posting Success");
+		return "RecruiterHome";
 	}
 
 }

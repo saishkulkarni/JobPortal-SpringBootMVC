@@ -5,7 +5,6 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Main</title>
-<link rel="stylesheet" href="../home.css">
 </head>
 <body>
 	<h1>Home Page</h1>
