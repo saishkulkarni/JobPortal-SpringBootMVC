@@ -83,4 +83,15 @@ public class RecruiterController {
 		} else
 			return recruiterService.addJob(recruiter, job, session, map);
 	}
+	
+	@GetMapping("/view-jobs")
+	public String getJobs(HttpSession session, ModelMap map)
+	{
+		Recruiter recruiter = (Recruiter) session.getAttribute("recruiter");
+		if (recruiter == null) {
+			map.put("fail", "Invalid Session");
+			return "Home";
+		} else
+			return recruiterService.getJobs(recruiter,map);
+	}
 }

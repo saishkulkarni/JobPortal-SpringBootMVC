@@ -125,6 +125,19 @@ public class RecruiterService {
 		session.setAttribute("recruiter", recruiter);
 		map.put("pass", "Job Posting Success");
 		return "RecruiterHome";
+	}
+
+	public String getJobs(Recruiter recruiter, ModelMap map) {
+		List<Job> jobs=recruiter.getJobs();
+		if(jobs.isEmpty())
+		{
+			map.put("fail", "No Job Posted Yet");
+			return "RecruiterHome";
+		}
+		else {
+			map.put("jobs", jobs);
+			return "ViewRecruiterJobs";
+		}
 	} 
 
 }
