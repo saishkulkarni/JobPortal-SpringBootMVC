@@ -7,10 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-${pass}
-<h1>Recruiter Home</h1>
-<a href="/recruiter/add-job"><button>Add Job</button></a>
-<button>See Applications</button>
+<h1>Admin Home</h1>
+<a href="/admin/approve-job"><button>Approve Job</button></a>
 <a href="/logout"><button>Logout</button></a>
 </body>
 </html>

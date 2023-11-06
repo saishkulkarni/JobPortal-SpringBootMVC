@@ -65,12 +65,22 @@ public class RecruiterController {
 	}
 
 	@GetMapping("/add-job")
-	public String loadAddJob() {
+	public String loadAddJob(HttpSession session, ModelMap map) {
+		Recruiter recruiter = (Recruiter) session.getAttribute("recruiter");
+		if (recruiter == null) {
+			map.put("fail", "Invalid Session");
+			return "Home";
+		} else
 		return "AddJob";
 	}
 
 	@PostMapping("/add-job")
-	public String addjob(Job job, HttpSession session,ModelMap map) {
-		return recruiterService.addJob(job, session,map);
+	public String addjob(Job job, HttpSession session, ModelMap map) {
+		Recruiter recruiter = (Recruiter) session.getAttribute("recruiter");
+		if (recruiter == null) {
+			map.put("fail", "Invalid Session");
+			return "Home";
+		} else
+			return recruiterService.addJob(recruiter, job, session, map);
 	}
 }

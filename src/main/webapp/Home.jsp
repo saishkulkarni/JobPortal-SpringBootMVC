@@ -7,6 +7,7 @@
 <title>Main</title>
 </head>
 <body>
+${pass}${fail }
 	<h1>Home Page</h1>
 	<div class="container">
 		<a href="/admin/login"><button>Admin</button></a> <a

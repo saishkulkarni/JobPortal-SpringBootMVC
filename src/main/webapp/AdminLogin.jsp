@@ -36,13 +36,14 @@ button {
 </style>
 </head>
 <body>
+${pass }${fail }
 	<h1>Admin Login</h1>
 	<div class="container">
-		<form>
+		<form action="/admin/login" method="post">
 			<table>
 				<tr>
 					<th>Email:</th>
-					<td><input type="email" name="email"></td>
+					<td><input type="text" name="email"></td>
 				</tr>
 				<tr>
 					<th>Password:</th>

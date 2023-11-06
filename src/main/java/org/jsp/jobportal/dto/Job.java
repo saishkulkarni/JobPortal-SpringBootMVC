@@ -16,6 +16,15 @@ public class Job {
 	String experience;
 	double ctc;
 	String location;
+	boolean approved;
+	
+	public boolean isApproved() {
+		return approved;
+	}
+
+	public void setApproved(boolean approved) {
+		this.approved = approved;
+	}
 
 	public int getId() {
 		return id;

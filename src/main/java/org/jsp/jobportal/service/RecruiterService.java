@@ -113,9 +113,8 @@ public class RecruiterService {
 		}
 	}
 
-	public String addJob(Job job, HttpSession session, ModelMap map) {
-		Recruiter recruiter = (Recruiter) session.getAttribute("recruiter");
-
+	public String addJob(Recruiter recruiter,Job job, HttpSession session, ModelMap map) {
+		
 		List<Job> list = recruiter.getJobs();
 		if (list == null)
 			list = new ArrayList<Job>();
@@ -126,6 +125,6 @@ public class RecruiterService {
 		session.setAttribute("recruiter", recruiter);
 		map.put("pass", "Job Posting Success");
 		return "RecruiterHome";
-	}
+	} 
 
 }
