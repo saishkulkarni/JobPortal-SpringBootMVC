@@ -5,7 +5,6 @@ import java.util.Random;
 
 import org.jsp.jobportal.dao.UserDao;
 import org.jsp.jobportal.dto.User;
-import org.jsp.jobportal.dto.User;
 import org.jsp.jobportal.helper.EmailLogic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class UserService {
@@ -62,7 +62,7 @@ public class UserService {
 		}
 	}
 
-	public String login(String email, String password, ModelMap map) {
+	public String login(String email, String password, ModelMap map, HttpSession session) {
 		User user = userDao.findByEmail(email);
 		if (user == null) {
 			map.put("fail", "Invalid Email");
@@ -71,6 +71,7 @@ public class UserService {
 			if (user.getPassword().equals(password)) {
 				if (user.isVerified()) {
 					map.put("pass", "Login Succcess");
+					session.setAttribute("user", user);
 					return "UserHome";
 				} else {
 					map.put("fail", "Account Not Verified");

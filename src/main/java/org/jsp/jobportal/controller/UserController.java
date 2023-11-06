@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/user")
@@ -44,9 +45,9 @@ public class UserController {
 	}
 	
 	@PostMapping("/login")
-	public String login(@RequestParam String email,@RequestParam String password,ModelMap map)
+	public String login(@RequestParam String email,@RequestParam String password,ModelMap map,HttpSession session)
 	{
-		return userService.login(email,password,map);
+		return userService.login(email,password,map,session);
 	}
 	
 	@GetMapping("/forgot-password")

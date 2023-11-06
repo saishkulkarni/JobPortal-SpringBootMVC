@@ -27,6 +27,7 @@ public class User {
 	byte[] resume;
 	int otp;
 	boolean verified;
+	boolean prime;
 
 	
 	public int getId() {
