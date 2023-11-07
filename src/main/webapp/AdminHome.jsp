@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>Admin Home</h1>
-<a href="/admin/approve-job"><button>Approve Job</button></a>
+<a href="/admin/view-jobs"><button>Approve Job</button></a>
 <a href="/logout"><button>Logout</button></a>
 </body>
 </html>

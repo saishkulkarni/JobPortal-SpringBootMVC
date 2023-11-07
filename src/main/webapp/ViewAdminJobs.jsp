@@ -1,14 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+    pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>View All Jobs</title>
+<title>View Admin Jobs</title>
 </head>
 <body>
-	<h1>All Job Details</h1>
+<h1>All Job Details</h1>
 	<table border="1">
 		<tr>
 			<th>Job Role</th>
@@ -26,17 +26,19 @@
 			<td>${job.experience}</td>
 			<td>${job.location}</td>
 			<td>
+			<a href="/admin/change-status/${job.id}"><button>
 			<c:if test="${job.approved}">
-			Approved
+			Disapprove
 			</c:if>
 			<c:if test="${!job.approved}">
-			Not Approved
+			Approve
 			</c:if>
+			</button></a>
 			</td>
 			</tr>
 		</c:forEach>
 	</table>
 	<br>
-	<a href="/recruiter/back"><button>Back</button></a>
+	<a href="/admin/back"><button>Back</button></a>
 </body>
 </html>

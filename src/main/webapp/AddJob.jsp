@@ -71,5 +71,7 @@ input {
 			</tr>
 		</table>
 	</form>
+	<br>
+	<a href="/recruiter/back"><button>Back</button></a>
 </body>
 </html>
