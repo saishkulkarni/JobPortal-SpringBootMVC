@@ -23,4 +23,8 @@ public class JobDao {
 	public void save(Job job) {
 		jobRepository.save(job);
 	}
+
+	public List<Job> fetchAllApproved() {
+		return jobRepository.findByApprovedTrue();
+	}
 }

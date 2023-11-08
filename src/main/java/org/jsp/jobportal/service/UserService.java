@@ -1,9 +1,12 @@
 package org.jsp.jobportal.service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 
+import org.jsp.jobportal.dao.JobDao;
 import org.jsp.jobportal.dao.UserDao;
+import org.jsp.jobportal.dto.Job;
 import org.jsp.jobportal.dto.User;
 import org.jsp.jobportal.helper.EmailLogic;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,9 @@ public class UserService {
 
 	@Autowired
 	UserDao userDao;
+
+	@Autowired
+	JobDao jobDao;
 
 	@Autowired
 	EmailLogic emailLogic;
@@ -71,6 +77,7 @@ public class UserService {
 			if (user.getPassword().equals(password)) {
 				if (user.isVerified()) {
 					map.put("pass", "Login Succcess");
+					map.put("user", user);
 					session.setAttribute("user", user);
 					return "UserHome";
 				} else {
@@ -112,6 +119,41 @@ public class UserService {
 			map.put("id", id);
 			return "UserPassword";
 		}
+	}
+
+	public String getJobs(ModelMap map) {
+		List<Job> jobs = jobDao.fetchAllApproved();
+		if (jobs.isEmpty()) {
+			map.put("fail", "No Job Posted Yet");
+			return "UserHome";
+		} else {
+			map.put("jobs", jobs);
+			return "ViewUserJobs";
+		}
+	}
+
+	public String applyJob(int id, User user, ModelMap map) {
+		Job job = jobDao.findById(id);
+		if (job == null) {
+			map.put("fail", "Something went Wrong");
+			return "Home";
+		}
+		else {
+			if(job.getCtc()<=4 || user.isPrime())
+			{
+				//Logic for Applying
+				map.put("pass", "Applied Success");
+				return "UserHome";
+			}
+			else {
+				map.put("fail", "You have to be Prime memeber for Applying to this");
+				return "UserHome";
+			}
+		}
+	}
+
+	public String buyPrime(User user, ModelMap map) {
+		return null;
 	}
 
 }

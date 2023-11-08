@@ -28,10 +28,17 @@ public class User {
 	int otp;
 	boolean verified;
 	boolean prime;
-
 	
 	public int getId() {
 		return id;
+	}
+
+	public boolean isPrime() {
+		return prime;
+	}
+
+	public void setPrime(boolean prime) {
+		this.prime = prime;
 	}
 
 	public void setId(int id) {
