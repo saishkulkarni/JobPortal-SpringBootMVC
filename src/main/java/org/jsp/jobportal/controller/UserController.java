@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.razorpay.RazorpayException;
+
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 
@@ -93,17 +95,27 @@ public class UserController {
 			map.put("fail", "Invalid Session");
 			return "Home";
 		} else
-			return userService.applyJob(id,user,map);
+			return userService.applyJob(id, user, map);
 	}
-	
+
 	@GetMapping("/buy-prime")
-	public String butPrime(HttpSession session, ModelMap map) {
+	public String buyPrime(HttpSession session, ModelMap map) throws RazorpayException {
 		User user = (User) session.getAttribute("user");
 		if (user == null) {
 			map.put("fail", "Invalid Session");
 			return "Home";
 		} else
-			return userService.buyPrime(user,map);
+			return userService.buyPrime(user, map);
+	}
+
+	@PostMapping("/payment/{id}")
+	public String paymentDone(@PathVariable int id,@RequestParam String razorpay_payment_id, ModelMap map, HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		if (user == null) {
+			map.put("fail", "Invalid Session");
+			return "Home";
+		} else
+			return userService.paymentDone(id,user,session,razorpay_payment_id, map);
 	}
 
 }
