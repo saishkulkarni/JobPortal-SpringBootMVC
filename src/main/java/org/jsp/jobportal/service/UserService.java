@@ -1,7 +1,9 @@
 package org.jsp.jobportal.service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -9,9 +11,11 @@ import org.json.JSONObject;
 import org.jsp.jobportal.dao.JobDao;
 import org.jsp.jobportal.dao.UserDao;
 import org.jsp.jobportal.dto.Job;
+import org.jsp.jobportal.dto.JobApplication;
 import org.jsp.jobportal.dto.PaymentDetails;
 import org.jsp.jobportal.dto.User;
 import org.jsp.jobportal.helper.EmailLogic;
+import org.jsp.jobportal.helper.JobStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
@@ -139,7 +143,7 @@ public class UserService {
 		}
 	}
 
-	public String applyJob(int id, User user, ModelMap map) {
+	public String applyJob(int id, User user, ModelMap map,HttpSession session) {
 		Job job = jobDao.findById(id);
 		if (job == null) {
 			map.put("fail", "Something went Wrong");
@@ -147,8 +151,42 @@ public class UserService {
 		} else {
 			if (job.getCtc() <= 4 || user.isPrime()) {
 				// Logic for Applying
-				map.put("pass", "Applied Success");
-				return "UserHome";
+				boolean applied = false;
+				String status = "";
+				List<JobApplication> applications = user.getApplications();
+				if(applications==null)
+					applications=new ArrayList<JobApplication>();
+				for (JobApplication application : applications) {
+					if (application.getJob().getId() == job.getId()) {
+						status = application.getJobStatus().name();
+						applied = true;
+					}
+				}
+
+				if (applied) {
+					map.put("fail", "Applied Already Current Status - " + status);
+					return "UserHome";
+				}
+				else {
+					JobApplication application=new JobApplication();
+					application.setAppliedDate(LocalDateTime.now());
+					application.setJobStatus(JobStatus.APPLIED);
+					application.setJob(job);
+					
+					applications.add(application);
+					user.setApplications(applications);
+					userDao.save(user);
+					
+					List<JobApplication> applications2=job.getApplications();
+					if(applications2==null)
+						applications2=new ArrayList<JobApplication>();
+					applications2.add(application);
+					job.setApplications(applications2);
+					jobDao.save(job);
+					session.setAttribute("user", user);
+					map.put("pass", "Applied Success");
+					return "UserHome";
+				}		
 			} else {
 				map.put("fail", "You have to be Prime memeber for Applying to this");
 				return "UserHome";

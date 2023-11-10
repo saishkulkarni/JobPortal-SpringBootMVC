@@ -1,9 +1,14 @@
 package org.jsp.jobportal.dto;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Job {
@@ -17,7 +22,18 @@ public class Job {
 	double ctc;
 	String location;
 	boolean approved;
-	
+
+	@ManyToMany
+	List<JobApplication> applications;
+
+	public List<JobApplication> getApplications() {
+		return applications;
+	}
+
+	public void setApplications(List<JobApplication> applications) {
+		this.applications = applications;
+	}
+
 	public boolean isApproved() {
 		return approved;
 	}

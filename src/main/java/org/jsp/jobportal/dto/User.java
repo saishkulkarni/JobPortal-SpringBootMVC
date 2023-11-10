@@ -1,13 +1,17 @@
 package org.jsp.jobportal.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class User {
@@ -28,7 +32,18 @@ public class User {
 	int otp;
 	boolean verified;
 	boolean prime;
-	
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	List<JobApplication> applications;
+
+	public List<JobApplication> getApplications() {
+		return applications;
+	}
+
+	public void setApplications(List<JobApplication> applications) {
+		this.applications = applications;
+	}
+
 	public int getId() {
 		return id;
 	}

@@ -95,7 +95,7 @@ public class UserController {
 			map.put("fail", "Invalid Session");
 			return "Home";
 		} else
-			return userService.applyJob(id, user, map);
+			return userService.applyJob(id, user, map,session);
 	}
 
 	@GetMapping("/buy-prime")
