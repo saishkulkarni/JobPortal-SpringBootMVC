@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-${pass}
+${pass}${fail }
 <h1>Recruiter Home</h1>
 <a href="/recruiter/add-job"><button>Add Job</button></a>
 <a href="/recruiter/view-jobs"><button>View Jobs</button></a>

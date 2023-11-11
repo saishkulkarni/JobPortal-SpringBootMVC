@@ -117,5 +117,15 @@ public class UserController {
 		} else
 			return userService.paymentDone(id,user,session,razorpay_payment_id, map);
 	}
-
+	
+	@GetMapping("/view-application")
+	public String viewMyApplications(HttpSession session,ModelMap map)
+	{
+		User user = (User) session.getAttribute("user");
+		if (user == null) {
+			map.put("fail", "Invalid Session");
+			return "Home";
+		} else
+			return userService.viewMyApplications(user, map);
+	}
 }

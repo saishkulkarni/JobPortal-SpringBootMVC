@@ -114,15 +114,15 @@ public class RecruiterService {
 	}
 
 	public String addJob(Recruiter recruiter,Job job, HttpSession session, ModelMap map) {
-		
+		job.setRecruiter(recruiter);
 		List<Job> list = recruiter.getJobs();
 		if (list == null)
 			list = new ArrayList<Job>();
 		list.add(job);
-
+		
 		recruiter.setJobs(list);
 		recruiterDao.save(recruiter);
-		session.setAttribute("recruiter", recruiter);
+		session.setAttribute("recruiter", recruiterDao.findById(recruiter.getId()));
 		map.put("pass", "Job Posting Success");
 		return "RecruiterHome";
 	}

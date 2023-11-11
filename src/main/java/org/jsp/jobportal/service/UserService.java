@@ -1,7 +1,6 @@
 package org.jsp.jobportal.service;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -143,7 +142,7 @@ public class UserService {
 		}
 	}
 
-	public String applyJob(int id, User user, ModelMap map,HttpSession session) {
+	public String applyJob(int id, User user, ModelMap map, HttpSession session) {
 		Job job = jobDao.findById(id);
 		if (job == null) {
 			map.put("fail", "Something went Wrong");
@@ -154,8 +153,8 @@ public class UserService {
 				boolean applied = false;
 				String status = "";
 				List<JobApplication> applications = user.getApplications();
-				if(applications==null)
-					applications=new ArrayList<JobApplication>();
+				if (applications == null)
+					applications = new ArrayList<JobApplication>();
 				for (JobApplication application : applications) {
 					if (application.getJob().getId() == job.getId()) {
 						status = application.getJobStatus().name();
@@ -166,27 +165,26 @@ public class UserService {
 				if (applied) {
 					map.put("fail", "Applied Already Current Status - " + status);
 					return "UserHome";
-				}
-				else {
-					JobApplication application=new JobApplication();
+				} else {
+					JobApplication application = new JobApplication();
 					application.setAppliedDate(LocalDateTime.now());
 					application.setJobStatus(JobStatus.APPLIED);
 					application.setJob(job);
-					
+
 					applications.add(application);
 					user.setApplications(applications);
 					userDao.save(user);
-					
-					List<JobApplication> applications2=job.getApplications();
-					if(applications2==null)
-						applications2=new ArrayList<JobApplication>();
+
+					List<JobApplication> applications2 = job.getApplications();
+					if (applications2 == null)
+						applications2 = new ArrayList<JobApplication>();
 					applications2.add(application);
 					job.setApplications(applications2);
 					jobDao.save(job);
-					session.setAttribute("user", user);
+					session.setAttribute("user", userDao.findById(user.getId()));
 					map.put("pass", "Applied Success");
 					return "UserHome";
-				}		
+				}
 			} else {
 				map.put("fail", "You have to be Prime memeber for Applying to this");
 				return "UserHome";
@@ -236,6 +234,18 @@ public class UserService {
 				map.put("fail", "Payment Failed");
 			}
 			return "UserHome";
+		}
+	}
+
+	public String viewMyApplications(User user, ModelMap map) {
+		List<JobApplication> applications = user.getApplications();
+		if (applications == null || applications.isEmpty()) {
+			map.put("fail", "Not Applied for Any Job yet");
+			return "UserHome";
+		}
+		else {
+			map.put("applications", applications);
+			return "ViewApplications";
 		}
 	}
 

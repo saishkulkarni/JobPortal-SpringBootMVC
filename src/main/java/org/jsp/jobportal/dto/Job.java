@@ -22,6 +22,17 @@ public class Job {
 	double ctc;
 	String location;
 	boolean approved;
+	
+	@ManyToOne
+	Recruiter recruiter;
+	
+	public Recruiter getRecruiter() {
+		return recruiter;
+	}
+
+	public void setRecruiter(Recruiter recruiter) {
+		this.recruiter = recruiter;
+	}
 
 	@ManyToMany
 	List<JobApplication> applications;
