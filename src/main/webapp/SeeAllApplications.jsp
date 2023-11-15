@@ -11,32 +11,38 @@
 	Select A Job:
 	<select onchange="seeApplication()">
 		<c:forEach var="job" items="${jobs}">
-			<c:set var="job" value="${job}" scope="application"></c:set>
+			<c:set var="job1" value="${job}" scope="application"></c:set>
 			<option>${job.title}</option>
 		</c:forEach>
 	</select>
 
 	<div id="applications" style="display: none">
-		<table border="1px solid black">
-			<tr>
-				<th>User Name</th>
-				<th>Applied Date</th>
-				<th>Status</th>
-				<th>Interview Date</th>
-				<th>Download Resume</th>
-				<th>Change Status</th>
-			</tr>
-			<c:forEach var="application" items="${job.applications}">
+		<c:if test="${job1.applications==null||job1.applications.isEmpty() }">
+			<h1>No Applications Yet</h1>
+		</c:if>
+		<c:if test="${job1.applications!=null||!job1.applications.isEmpty() }">
+			<table border="1px solid black">
 				<tr>
-					<th>${application.user.fullname }</th>
-					<th>${application.appliedDate }</th>
-					<th>${application.jobStatus}</th>
-					<th>${application.interviewDate }</th>
-					<th><button>Download Resume</button></th>
-					<th><button>Change Status</button></th>
+					<th>User Name</th>
+					<th>Applied Date</th>
+					<th>Status</th>
+					<th>Interview Date</th>
+					<th>Download Resume</th>
+					<th>Change Status</th>
 				</tr>
-			</c:forEach>
-		</table>
+
+				<c:forEach var="application" items="${job1.applications}">
+					<tr>
+						<th>${application.user.fullname }</th>
+						<th>${application.appliedDate }</th>
+						<th>${application.jobStatus}</th>
+						<th>${application.interviewDate }</th>
+						<th><button>Download Resume</button></th>
+						<th><button>Change Status</button></th>
+					</tr>
+				</c:forEach>
+			</table>
+		</c:if>
 	</div>
 
 	<a href="/recruiter/back"><button>Back</button></a>
