@@ -103,5 +103,16 @@ public class RecruiterController {
 		} else
 			return "RecruiterHome";
 	}
+	
+	@GetMapping("/view-applications")
+	public String viewApplications(HttpSession session, ModelMap map)
+	{
+		Recruiter recruiter = (Recruiter) session.getAttribute("recruiter");
+		if (recruiter == null) {
+			map.put("fail", "Invalid Session");
+			return "Home";
+		} else
+			return recruiterService.viewApplication(recruiter,map);
+	}
 }
  

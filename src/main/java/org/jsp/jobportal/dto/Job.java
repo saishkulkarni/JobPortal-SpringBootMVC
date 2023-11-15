@@ -3,12 +3,12 @@ package org.jsp.jobportal.dto;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 
 @Entity
 public class Job {
@@ -22,10 +22,10 @@ public class Job {
 	double ctc;
 	String location;
 	boolean approved;
-	
+
 	@ManyToOne
 	Recruiter recruiter;
-	
+
 	public Recruiter getRecruiter() {
 		return recruiter;
 	}
@@ -34,7 +34,7 @@ public class Job {
 		this.recruiter = recruiter;
 	}
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	List<JobApplication> applications;
 
 	public List<JobApplication> getApplications() {

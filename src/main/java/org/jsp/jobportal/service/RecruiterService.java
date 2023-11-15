@@ -113,13 +113,13 @@ public class RecruiterService {
 		}
 	}
 
-	public String addJob(Recruiter recruiter,Job job, HttpSession session, ModelMap map) {
+	public String addJob(Recruiter recruiter, Job job, HttpSession session, ModelMap map) {
 		job.setRecruiter(recruiter);
 		List<Job> list = recruiter.getJobs();
 		if (list == null)
 			list = new ArrayList<Job>();
 		list.add(job);
-		
+
 		recruiter.setJobs(list);
 		recruiterDao.save(recruiter);
 		session.setAttribute("recruiter", recruiterDao.findById(recruiter.getId()));
@@ -128,16 +128,25 @@ public class RecruiterService {
 	}
 
 	public String getJobs(Recruiter recruiter, ModelMap map) {
-		List<Job> jobs=recruiter.getJobs();
-		if(jobs.isEmpty())
-		{
+		List<Job> jobs = recruiter.getJobs();
+		if (jobs.isEmpty()) {
 			map.put("fail", "No Job Posted Yet");
 			return "RecruiterHome";
-		}
-		else {
+		} else {
 			map.put("jobs", jobs);
 			return "ViewRecruiterJobs";
 		}
-	} 
+	}
+
+	public String viewApplication(Recruiter recruiter, ModelMap map) {
+		List<Job> jobs = recruiter.getJobs();
+		if (jobs == null || jobs.isEmpty()) {
+			map.put("fail", "No Job Posted Yet");
+			return "RecruiterHome";
+		} else {
+			map.put("jobs", jobs);
+			return "SeeAllApplications";
+		}
+	}
 
 }

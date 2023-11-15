@@ -167,6 +167,7 @@ public class UserService {
 					return "UserHome";
 				} else {
 					JobApplication application = new JobApplication();
+					application.setUser(user);
 					application.setAppliedDate(LocalDateTime.now());
 					application.setJobStatus(JobStatus.APPLIED);
 					application.setJob(job);

@@ -18,12 +18,23 @@ public class JobApplication {
 	LocalDateTime appliedDate;
 	JobStatus jobStatus;
 	LocalDateTime interviewDate;
+	
+	@ManyToOne
+	User user;
 
 	@ManyToOne
 	Job job;
 
 	public int getId() {
 		return id;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public void setId(int id) {
