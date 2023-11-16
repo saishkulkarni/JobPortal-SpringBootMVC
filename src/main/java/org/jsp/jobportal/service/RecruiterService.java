@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.jsp.jobportal.dao.JobDao;
 import org.jsp.jobportal.dao.RecruiterDao;
 import org.jsp.jobportal.dto.Job;
+import org.jsp.jobportal.dto.JobApplication;
 import org.jsp.jobportal.dto.Recruiter;
 import org.jsp.jobportal.helper.EmailLogic;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class RecruiterService {
 
 	@Autowired
 	RecruiterDao recruiterDao;
+
+	@Autowired
+	JobDao jobDao;
 
 	@Autowired
 	EmailLogic emailLogic;
@@ -146,6 +151,23 @@ public class RecruiterService {
 		} else {
 			map.put("jobs", jobs);
 			return "SeeAllApplications";
+		}
+	}
+
+	public String viewApplication(int id, Recruiter recruiter, ModelMap map) {
+		Job job = jobDao.findById(id);
+		if (job == null) {
+			map.put("fail", "Something went wrong");
+			return "Home";
+		} else {
+			List<JobApplication> applications = job.getApplications();
+			if (applications == null || applications.isEmpty()) {
+				map.put("fail", "No Applications Yet");
+				return "RecruiterHome";
+			} else {
+				map.put("applications", applications);
+				return "ViewJobApplications";
+			}
 		}
 	}
 
