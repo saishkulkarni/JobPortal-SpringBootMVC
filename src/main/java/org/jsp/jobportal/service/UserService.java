@@ -195,7 +195,7 @@ public class UserService {
 
 	public String buyPrime(User user, ModelMap map) throws RazorpayException {
 
-		RazorpayClient razorpayClient = new RazorpayClient("rzp_test_3Oq1XTgjDSHVKb", "0IDnsW6Y4UF74NIj1saishrKTAMx7");
+		RazorpayClient razorpayClient = new RazorpayClient("rzp_test_3Oq1XTgjDSHVKb", "0IDnsW6Y4UF74NIj1rKTAMx7");
 		JSONObject object = new JSONObject();
 		object.put("amount", 19900);
 		object.put("currency", "INR");

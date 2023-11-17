@@ -1,6 +1,7 @@
 package org.jsp.jobportal.service;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,6 +12,7 @@ import org.jsp.jobportal.dto.Job;
 import org.jsp.jobportal.dto.JobApplication;
 import org.jsp.jobportal.dto.Recruiter;
 import org.jsp.jobportal.helper.EmailLogic;
+import org.jsp.jobportal.helper.JobStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
@@ -154,7 +156,7 @@ public class RecruiterService {
 		}
 	}
 
-	public String viewApplication(int id, Recruiter recruiter, ModelMap map) {
+	public String viewApplication(int id, ModelMap map) {
 		Job job = jobDao.findById(id);
 		if (job == null) {
 			map.put("fail", "Something went wrong");
@@ -168,6 +170,21 @@ public class RecruiterService {
 				map.put("applications", applications);
 				return "ViewJobApplications";
 			}
+		}
+	}
+
+	public String scheduleInterview(int id, LocalDateTime interviewDate, ModelMap map, HttpSession session,
+			Recruiter recruiter) {
+		JobApplication application = jobDao.findApplicationById(id);
+		if (application == null) {
+			map.put("fail", "Something Went Wrong");
+			return "Home";
+		} else {
+			application.setJobStatus(JobStatus.SCHEDULED);
+			application.setInterviewDate(interviewDate);
+			jobDao.saveApplication(application);
+			session.setAttribute("recruiter", recruiterDao.findById(id));
+			return viewApplication(application.getJob().getId(), map);
 		}
 	}
 

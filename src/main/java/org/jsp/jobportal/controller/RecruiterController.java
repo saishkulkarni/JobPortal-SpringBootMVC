@@ -1,6 +1,7 @@
 package org.jsp.jobportal.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 
 import org.jsp.jobportal.dto.Job;
 import org.jsp.jobportal.dto.Recruiter;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -103,28 +105,49 @@ public class RecruiterController {
 		} else
 			return "RecruiterHome";
 	}
-	
+
 	@GetMapping("/view-applications")
-	public String viewApplications(HttpSession session, ModelMap map)
-	{
+	public String viewApplications(HttpSession session, ModelMap map) {
 		Recruiter recruiter = (Recruiter) session.getAttribute("recruiter");
 		if (recruiter == null) {
 			map.put("fail", "Invalid Session");
 			return "Home";
 		} else
-			return recruiterService.viewApplication(recruiter,map);
+			return recruiterService.viewApplication(recruiter, map);
 	}
-	
 
 	@PostMapping("/view-application")
-	public String viewApplication(@RequestParam int id,HttpSession session, ModelMap map)
-	{
+	public String viewApplication(@RequestParam int id, HttpSession session, ModelMap map) {
 		Recruiter recruiter = (Recruiter) session.getAttribute("recruiter");
 		if (recruiter == null) {
 			map.put("fail", "Invalid Session");
 			return "Home";
 		} else
-			return recruiterService.viewApplication(id,recruiter,map);
+			return recruiterService.viewApplication(id, map);
 	}
+
+	@GetMapping("/schedule/{id}")
+	public String loadSelectDate(@PathVariable int id, ModelMap map, HttpSession session) {
+		Recruiter recruiter = (Recruiter) session.getAttribute("recruiter");
+		if (recruiter == null) {
+			map.put("fail", "Invalid Session");
+			return "Home";
+		} else {
+			map.put("id", id);
+			return "SelectInterviewDate";
+		}
+	}
+
+	@PostMapping("/schedule")
+	public String scheduleInterview(HttpSession session, ModelMap map, @RequestParam int id,
+			@RequestParam LocalDateTime interviewDate) {
+		Recruiter recruiter = (Recruiter) session.getAttribute("recruiter");
+		if (recruiter == null) {
+			map.put("fail", "Invalid Session");
+			return "Home";
+		} else {
+			return recruiterService.scheduleInterview(id,interviewDate,map,session,recruiter);
+		}
+	}		
+
 }
- 
