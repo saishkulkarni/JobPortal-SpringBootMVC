@@ -148,6 +148,28 @@ public class RecruiterController {
 		} else {
 			return recruiterService.scheduleInterview(id,interviewDate,map,session,recruiter);
 		}
-	}		
+	}
+	
+	@GetMapping("/accept/{id}")
+	public String acceptInterview(HttpSession session, ModelMap map, @PathVariable int id) {
+		Recruiter recruiter = (Recruiter) session.getAttribute("recruiter");
+		if (recruiter == null) {
+			map.put("fail", "Invalid Session");
+			return "Home";
+		} else {
+			return recruiterService.acceptInterview(id,map,session,recruiter);
+		}
+	}
+	
+	@GetMapping("/reject/{id}")
+	public String rejectInterview(HttpSession session, ModelMap map, @PathVariable int id) {
+		Recruiter recruiter = (Recruiter) session.getAttribute("recruiter");
+		if (recruiter == null) {
+			map.put("fail", "Invalid Session");
+			return "Home";
+		} else {
+			return recruiterService.rejectInterview(id,map,session,recruiter);
+		}
+	}
 
 }

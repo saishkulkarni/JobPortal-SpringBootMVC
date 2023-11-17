@@ -38,10 +38,10 @@
 							test="${application.jobStatus.name().equals('APPLIED')}">
 							<a href="/recruiter/schedule/${application.id}"><button>Schedule Interview</button></a>
 						</c:if> <c:if test="${application.jobStatus.name().equals('SCHEDULED')}">
-							<button>ACCEPT</button>
-							<button>REJECT</button>
+							<a href="/recruiter/accept/${application.id}"><button>ACCEPT</button></a>
+							<a href="/recruiter/reject/${application.id}"><button>REJECT</button></a>
 						</c:if> <c:if
-							test="${application.jobStatus.name().equals('ACCEPTED')||application.jobStatus.name().equals('REJECTED')}">
+							test="${application.jobStatus.name().equals('SELECTED')||application.jobStatus.name().equals('REJECTED')}">
 						NA
 						</c:if></th>
 				</tr>

@@ -8,9 +8,12 @@ import java.util.Random;
 
 import org.jsp.jobportal.dao.JobDao;
 import org.jsp.jobportal.dao.RecruiterDao;
+import org.jsp.jobportal.dao.UserDao;
 import org.jsp.jobportal.dto.Job;
 import org.jsp.jobportal.dto.JobApplication;
+import org.jsp.jobportal.dto.Notification;
 import org.jsp.jobportal.dto.Recruiter;
+import org.jsp.jobportal.dto.User;
 import org.jsp.jobportal.helper.EmailLogic;
 import org.jsp.jobportal.helper.JobStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,9 @@ public class RecruiterService {
 
 	@Autowired
 	EmailLogic emailLogic;
+
+	@Autowired
+	UserDao userDao;
 
 	public String signup(Recruiter recruiter, ModelMap map) throws UnsupportedEncodingException, MessagingException {
 		Recruiter recruiter1 = recruiterDao.findByEmail(recruiter.getEmail());
@@ -183,6 +189,83 @@ public class RecruiterService {
 			application.setJobStatus(JobStatus.SCHEDULED);
 			application.setInterviewDate(interviewDate);
 			jobDao.saveApplication(application);
+
+			Notification notification = new Notification();
+			notification.setTime(LocalDateTime.now());
+			notification.setMessage("Interview Schedule On :" + interviewDate + " for the Company :"
+					+ application.getJob().getRecruiter().getCompanyname());
+
+			User user = application.getUser();
+
+			List<Notification> notifications = user.getNotifications();
+			if (notifications == null)
+				notifications = new ArrayList<Notification>();
+			notifications.add(notification);
+			user.setNotifications(notifications);
+
+			userDao.save(user);
+			map.put("pass", "Scheduled Success");
+			session.setAttribute("recruiter", recruiterDao.findById(id));
+			return viewApplication(application.getJob().getId(), map);
+		}
+	}
+
+	public String acceptInterview(int id, ModelMap map, HttpSession session, Recruiter recruiter) {
+		JobApplication application = jobDao.findApplicationById(id);
+		if (application == null) {
+			map.put("fail", "Something Went Wrong");
+			return "Home";
+		} else {
+			application.setJobStatus(JobStatus.SELECTED);
+			jobDao.saveApplication(application);
+
+			Notification notification = new Notification();
+			notification.setTime(LocalDateTime.now());
+			notification.setMessage("Congratulations YOu got Selected in the Company :"
+					+ application.getJob().getRecruiter().getCompanyname() + " for the Role: "
+					+ application.getJob().getTitle());
+
+			User user = application.getUser();
+
+			List<Notification> notifications = user.getNotifications();
+			if (notifications == null)
+				notifications = new ArrayList<Notification>();
+			notifications.add(notification);
+			user.setNotifications(notifications);
+
+			userDao.save(user);
+			map.put("pass", "Selected Success");
+			session.setAttribute("recruiter", recruiterDao.findById(id));
+			return viewApplication(application.getJob().getId(), map);
+		}
+	}
+
+	public String rejectInterview(int id, ModelMap map, HttpSession session, Recruiter recruiter) {
+		JobApplication application = jobDao.findApplicationById(id);
+		if (application == null) {
+			map.put("fail", "Something Went Wrong");
+			return "Home";
+		} else {
+			application.setJobStatus(JobStatus.REJECTED);
+			jobDao.saveApplication(application);
+
+			Notification notification = new Notification();
+			notification.setTime(LocalDateTime.now());
+			notification.setMessage(
+					"BadLuck You got Rejected in the Company: " + application.getJob().getRecruiter().getCompanyname()
+							+ " for the Role: " + application.getJob().getTitle() + " for further Queries contact : "
+							+ application.getJob().getRecruiter().getEmail());
+
+			User user = application.getUser();
+
+			List<Notification> notifications = user.getNotifications();
+			if (notifications == null)
+				notifications = new ArrayList<Notification>();
+			notifications.add(notification);
+			user.setNotifications(notifications);
+
+			userDao.save(user);
+			map.put("pass", "Rejected Success");
 			session.setAttribute("recruiter", recruiterDao.findById(id));
 			return viewApplication(application.getJob().getId(), map);
 		}

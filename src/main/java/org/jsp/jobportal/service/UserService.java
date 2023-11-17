@@ -11,6 +11,7 @@ import org.jsp.jobportal.dao.JobDao;
 import org.jsp.jobportal.dao.UserDao;
 import org.jsp.jobportal.dto.Job;
 import org.jsp.jobportal.dto.JobApplication;
+import org.jsp.jobportal.dto.Notification;
 import org.jsp.jobportal.dto.PaymentDetails;
 import org.jsp.jobportal.dto.User;
 import org.jsp.jobportal.helper.EmailLogic;
@@ -243,11 +244,32 @@ public class UserService {
 		if (applications == null || applications.isEmpty()) {
 			map.put("fail", "Not Applied for Any Job yet");
 			return "UserHome";
-		}
-		else {
+		} else {
 			map.put("applications", applications);
 			return "ViewApplications";
 		}
+	}
+
+	public String viewNotifications(User user, ModelMap map) {
+		List<Notification> notifications = user.getNotifications();
+		if (notifications == null || notifications.isEmpty()) {
+			map.put("fail", "No Notifications Yet");
+			return "UserHome";
+		} else {
+			map.put("notifications", notifications);
+			return "ViewNotifications";
+		}
+	}
+
+	public String deleteNotification(User user, int id, ModelMap map, HttpSession session) {
+		Notification notification = userDao.findNotification(id);
+		user.getNotifications().remove(notification);
+		userDao.save(user);
+		session.setAttribute("user", user);
+		userDao.deleteNotification(id);
+		map.put("pass", "Notification removed Success");
+		return viewNotifications(user, map);
+
 	}
 
 }

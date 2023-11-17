@@ -33,6 +33,18 @@ public class User {
 	boolean verified;
 	boolean prime;
 
+	
+	public List<Notification> getNotifications() {
+		return notifications;
+	}
+
+	public void setNotifications(List<Notification> notifications) {
+		this.notifications = notifications;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	List<Notification> notifications;
+
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	List<JobApplication> applications;
 

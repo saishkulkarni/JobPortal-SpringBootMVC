@@ -128,4 +128,26 @@ public class UserController {
 		} else
 			return userService.viewMyApplications(user, map);
 	}
+	
+	@GetMapping("/notifications")
+	public String getNotifications(HttpSession session,ModelMap map)
+	{
+		User user = (User) session.getAttribute("user");
+		if (user == null) {
+			map.put("fail", "Invalid Session");
+			return "Home";
+		} else
+			return userService.viewNotifications(user, map);
+	}
+	
+	@GetMapping("/delete-notification/{id}")
+	public String deleteNotification(@PathVariable int id,ModelMap map,HttpSession session)
+	{
+		User user = (User) session.getAttribute("user");
+		if (user == null) {
+			map.put("fail", "Invalid Session");
+			return "Home";
+		} else
+			return userService.deleteNotification(user,id, map,session);
+	}
 }
