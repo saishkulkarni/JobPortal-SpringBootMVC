@@ -26,7 +26,7 @@
 					<th>${application.user.fullname }</th>
 					<th>${application.user.mobile }</th>
 					<th>${application.job.title }</th>
-					<th><button>Download Resume</button></th>
+					<th><a href="/recruiter/resume/${application.user.id}"><button>Download Resume</button></a></th>
 					<th>${application.appliedDate }</th>
 					<th><c:if test="${application.interviewDate==null}">
 						NA

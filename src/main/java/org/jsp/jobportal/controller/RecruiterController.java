@@ -7,6 +7,8 @@ import org.jsp.jobportal.dto.Job;
 import org.jsp.jobportal.dto.Recruiter;
 import org.jsp.jobportal.service.RecruiterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -146,10 +148,10 @@ public class RecruiterController {
 			map.put("fail", "Invalid Session");
 			return "Home";
 		} else {
-			return recruiterService.scheduleInterview(id,interviewDate,map,session,recruiter);
+			return recruiterService.scheduleInterview(id, interviewDate, map, session, recruiter);
 		}
 	}
-	
+
 	@GetMapping("/accept/{id}")
 	public String acceptInterview(HttpSession session, ModelMap map, @PathVariable int id) {
 		Recruiter recruiter = (Recruiter) session.getAttribute("recruiter");
@@ -157,10 +159,10 @@ public class RecruiterController {
 			map.put("fail", "Invalid Session");
 			return "Home";
 		} else {
-			return recruiterService.acceptInterview(id,map,session,recruiter);
+			return recruiterService.acceptInterview(id, map, session, recruiter);
 		}
 	}
-	
+
 	@GetMapping("/reject/{id}")
 	public String rejectInterview(HttpSession session, ModelMap map, @PathVariable int id) {
 		Recruiter recruiter = (Recruiter) session.getAttribute("recruiter");
@@ -168,8 +170,18 @@ public class RecruiterController {
 			map.put("fail", "Invalid Session");
 			return "Home";
 		} else {
-			return recruiterService.rejectInterview(id,map,session,recruiter);
+			return recruiterService.rejectInterview(id, map, session, recruiter);
 		}
 	}
 
+	@GetMapping("/resume/{id}")
+	public ResponseEntity<InputStreamResource> downloadResume(@PathVariable int id, HttpSession session, ModelMap map) {
+		Recruiter recruiter = (Recruiter) session.getAttribute("recruiter");
+		if (recruiter == null) {
+			map.put("fail", "Invalid Session");
+			return null;
+		} else {
+			return recruiterService.downloadResume(id, map);
+		}
+	}
 }

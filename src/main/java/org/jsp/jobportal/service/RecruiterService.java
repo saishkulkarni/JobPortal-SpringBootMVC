@@ -1,5 +1,6 @@
 package org.jsp.jobportal.service;
 
+import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,6 +18,10 @@ import org.jsp.jobportal.dto.User;
 import org.jsp.jobportal.helper.EmailLogic;
 import org.jsp.jobportal.helper.JobStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
@@ -269,6 +274,15 @@ public class RecruiterService {
 			session.setAttribute("recruiter", recruiterDao.findById(id));
 			return viewApplication(application.getJob().getId(), map);
 		}
+	}
+
+	public ResponseEntity<InputStreamResource> downloadResume(int id, ModelMap map) {
+		User user = userDao.findById(id);
+		byte[] resume = user.getResume();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_PDF);
+		headers.setContentDispositionFormData("attachment", "" + user.getFullname() + "_resume.pdf");
+		return ResponseEntity.ok().headers(headers).body(new InputStreamResource(new ByteArrayInputStream(resume)));
 	}
 
 }
