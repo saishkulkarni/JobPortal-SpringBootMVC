@@ -2,7 +2,9 @@ package org.jsp.jobportal.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -49,7 +51,8 @@ public class RecruiterService {
 		if (recruiter1 == null && recruiter2 == null) {
 			int otp = new Random().nextInt(100000, 999999);
 			recruiter.setOtp(otp);
-			 emailLogic.sendOtp(recruiter);
+			recruiter.setOtpCreatedTime(LocalDateTime.now());
+			//emailLogic.sendOtp(recruiter);
 			recruiterDao.save(recruiter);
 			map.put("pass", "Otp Sent");
 			map.put("id", recruiter.getId());
@@ -66,6 +69,8 @@ public class RecruiterService {
 			map.put("fail", "Invalid ID");
 			return "Home";
 		} else {
+		if(Duration.between(recruiter.getOtpCreatedTime(), LocalDateTime.now()).getSeconds()<30)
+		{
 			if (recruiter.getOtp() == otp) {
 				recruiter.setVerfied(true);
 				recruiterDao.save(recruiter);
@@ -76,6 +81,12 @@ public class RecruiterService {
 				map.put("id", id);
 				return "RecruiterOtp";
 			}
+		}
+		else {
+			map.put("fail", "Otp Time Out");
+			map.put("id", id);
+			return "RecruiterOtp";
+		}
 		}
 	}
 
@@ -283,6 +294,24 @@ public class RecruiterService {
 		headers.setContentType(MediaType.APPLICATION_PDF);
 		headers.setContentDispositionFormData("attachment", "" + user.getFullname() + "_resume.pdf");
 		return ResponseEntity.ok().headers(headers).body(new InputStreamResource(new ByteArrayInputStream(resume)));
+	}
+
+	public String resendOtp(int id, ModelMap map) throws UnsupportedEncodingException, MessagingException {
+		Recruiter recruiter = recruiterDao.findById(id);
+		if (recruiter == null) {
+			map.put("fail", "Something Went Wrong");
+			return "Home";
+		} else {
+			int otp = new Random().nextInt(100000, 999999);
+			recruiter.setOtp(otp);
+			recruiter.setOtpCreatedTime(LocalDateTime.now());
+			recruiterDao.save(recruiter);
+		//	emailLogic.sendOtp(recruiter);
+			map.put("pass", "Otp Sent Againx");
+			map.put("id", recruiter.getId());
+			return "RecruiterOtp";
+
+		}
 	}
 
 }

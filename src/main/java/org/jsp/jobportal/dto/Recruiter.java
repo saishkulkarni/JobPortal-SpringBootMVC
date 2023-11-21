@@ -1,5 +1,6 @@
 package org.jsp.jobportal.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -24,12 +25,21 @@ public class Recruiter {
 	String companylocation;
 	int otp;
 	boolean verfied;
+	LocalDateTime otpCreatedTime;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	List<Job> jobs;
 
 	public List<Job> getJobs() {
 		return jobs;
+	}
+
+	public LocalDateTime getOtpCreatedTime() {
+		return otpCreatedTime;
+	}
+
+	public void setOtpCreatedTime(LocalDateTime otpCreatedTime) {
+		this.otpCreatedTime = otpCreatedTime;
 	}
 
 	public void setJobs(List<Job> jobs) {

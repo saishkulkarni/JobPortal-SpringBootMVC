@@ -41,6 +41,12 @@ public class RecruiterController {
 	public String signup(Recruiter recruiter, ModelMap map) throws UnsupportedEncodingException, MessagingException {
 		return recruiterService.signup(recruiter, map);
 	}
+	
+	@GetMapping("/resend-otp/{id}")
+	public String resendOtp(@PathVariable int id ,ModelMap map) throws UnsupportedEncodingException, MessagingException
+	{
+		return recruiterService.resendOtp(id,map);
+	}
 
 	@PostMapping("/verify-otp")
 	public String verifyOtp(@RequestParam int id, @RequestParam int otp, ModelMap map) {
