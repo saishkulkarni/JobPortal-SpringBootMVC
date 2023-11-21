@@ -162,8 +162,16 @@ public class UserService {
 						applied = true;
 					}
 				}
-
+				Notification notification = new Notification();
+				List<Notification> notifications = user.getNotifications();
+				if (notifications == null)
+					notifications = new ArrayList<Notification>();
 				if (applied) {
+					notification.setMessage("Applied Already Current Status - " + status);
+					notification.setTime(LocalDateTime.now());
+					notifications.add(notification);
+					user.setNotifications(notifications);
+					userDao.save(user);
 					map.put("fail", "Applied Already Current Status - " + status);
 					return "UserHome";
 				} else {
@@ -183,6 +191,11 @@ public class UserService {
 					applications2.add(application);
 					job.setApplications(applications2);
 					jobDao.save(job);
+					notification.setMessage("Applied Success for the Job: " + application.getJob().getTitle());
+					notification.setTime(LocalDateTime.now());
+					notifications.add(notification);
+					user.setNotifications(notifications);
+					userDao.save(user);
 					session.setAttribute("user", userDao.findById(user.getId()));
 					map.put("pass", "Applied Success");
 					return "UserHome";
@@ -267,6 +280,7 @@ public class UserService {
 		userDao.save(user);
 		session.setAttribute("user", user);
 		userDao.deleteNotification(id);
+		session.setAttribute("user", userDao.findById(user.getId()));
 		map.put("pass", "Notification removed Success");
 		return viewNotifications(user, map);
 
