@@ -49,7 +49,7 @@ public class RecruiterService {
 		if (recruiter1 == null && recruiter2 == null) {
 			int otp = new Random().nextInt(100000, 999999);
 			recruiter.setOtp(otp);
-			// emailLogic.sendOtp(recruiter);
+			 emailLogic.sendOtp(recruiter);
 			recruiterDao.save(recruiter);
 			map.put("pass", "Otp Sent");
 			map.put("id", recruiter.getId());

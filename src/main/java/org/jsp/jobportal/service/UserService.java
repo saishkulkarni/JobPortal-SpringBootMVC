@@ -49,7 +49,7 @@ public class UserService {
 		if (user1 == null && user2 == null) {
 			int otp = new Random().nextInt(100000, 999999);
 			user.setOtp(otp);
-			// emailLogic.sendOtp(user);
+			 emailLogic.sendOtp(user);
 			userDao.save(user);
 			map.put("pass", "Otp Sent");
 			map.put("id", user.getId());
