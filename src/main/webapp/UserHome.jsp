@@ -16,6 +16,7 @@ ${pass}${fail}
 <a href="/user/view-jobs"><button>Jobs</button></a>
 <a href="/user/view-application"><button>See My Application</button></a>
 <a href="/user/notifications"><button>Notifications</button></a>
+<a href="/user/profile/${user.id}"><button>Edit Profile</button></a>
 <a href="/logout"><button>Logout</button></a>
 </body>
 </html>

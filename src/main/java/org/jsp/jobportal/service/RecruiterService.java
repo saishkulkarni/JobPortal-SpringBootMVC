@@ -144,6 +144,7 @@ public class RecruiterService {
 
 	public String addJob(Recruiter recruiter, Job job, HttpSession session, ModelMap map) {
 		job.setRecruiter(recruiter);
+		job.setPostedTime(LocalDateTime.now());
 		List<Job> list = recruiter.getJobs();
 		if (list == null)
 			list = new ArrayList<Job>();
@@ -292,7 +293,7 @@ public class RecruiterService {
 		byte[] resume = user.getResume();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_PDF);
-		headers.setContentDispositionFormData("attachment", "" + user.getFullname() + "_resume.pdf");
+		headers.setContentDispositionFormData("attachment", "" + user.getName() + "_resume.pdf");
 		return ResponseEntity.ok().headers(headers).body(new InputStreamResource(new ByteArrayInputStream(resume)));
 	}
 

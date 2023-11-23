@@ -1,5 +1,6 @@
 package org.jsp.jobportal.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -22,9 +23,19 @@ public class Job {
 	double ctc;
 	String location;
 	boolean approved;
+	LocalDateTime postedTime;
+	int numberOfPositions;
 
 	@ManyToOne
 	Recruiter recruiter;
+
+	public LocalDateTime getPostedTime() {
+		return postedTime;
+	}
+
+	public void setPostedTime(LocalDateTime postedTime) {
+		this.postedTime = postedTime;
+	}
 
 	public Recruiter getRecruiter() {
 		return recruiter;

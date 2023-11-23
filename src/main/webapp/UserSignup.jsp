@@ -21,8 +21,8 @@ fieldset{
             </legend>
                 <table>
                     <tr>
-                        <th>FULL NAME :</th>
-                        <td><input type="text" class="non" name="fullname"></td>
+                        <th>NAME :</th>
+                        <td><input type="text" class="non" name="name"></td>
                     </tr>
                     <tr>
                         <th>EMAIL :</th>
@@ -48,20 +48,6 @@ fieldset{
                         <th>GENDER :</th>
                         <td>MALE <input type="radio" name="gender" value="male">
                             FEMALE <input type="radio" name="gender" value="female">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>HIGHEST DEGREE :</th>
-                        <td><input type="text" class="non" name="highestdegree"></td>
-                    </tr>
-                    <tr>
-                        <th>% THROUGHOUT :</th>
-                        <td><input type="text" class="non" name="percentage"></td>
-                    </tr>
-                    <tr>
-                        <th>RESUME :</th>
-                        <td> 
-                            <input type="file" name="doc">
                         </td>
                     </tr> 
                 </table> 

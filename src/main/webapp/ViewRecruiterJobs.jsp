@@ -1,3 +1,5 @@
+<%@page import="java.time.LocalDateTime"%>
+<%@page import="java.time.Duration"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -17,22 +19,35 @@
 			<th>Experience</th>
 			<th>Location</th>
 			<th>Status</th>
+			<th>Posted</th>
 		</tr>
 		<c:forEach var="job" items="${jobs}">
 			<tr>
-			<td>${job.title }</td>
-			<td>${job.description}</td>
-			<td>${job.ctc}</td>
-			<td>${job.experience}</td>
-			<td>${job.location}</td>
-			<td>
-			<c:if test="${job.approved}">
+				<td>${job.title }</td>
+				<td>${job.description}</td>
+				<td>${job.ctc}</td>
+				<td>${job.experience}</td>
+				<td>${job.location}</td>
+				<td><c:if test="${job.approved}">
 			Approved
-			</c:if>
-			<c:if test="${!job.approved}">
+			</c:if> <c:if test="${!job.approved}">
 			Not Approved
+			</c:if></td>
+				<td><c:set var="duration"
+						value="${Duration.between(job.postedTime, LocalDateTime.now())}"></c:set>
+					<c:if test="${duration.toDays()==0 }">
+						<c:if test="${duration.toHours()==0 }">
+							<c:if test="${duration.toMinutes()==0 }">
+			${duration.toSeconds()} Seconds ago
 			</c:if>
-			</td>
+						</c:if>
+					</c:if> <c:if test="${duration.toMinutes()>0 }">
+			${duration.toMinutes()} Minutes ago
+			</c:if> <c:if test="${duration.toHours()>0 }">
+			${duration.toHours()} Hours ago
+			</c:if> <c:if test="${duration.toDays()>0 }">
+			${duration.toDays()} Ago
+			</c:if></td>
 			</tr>
 		</c:forEach>
 	</table>

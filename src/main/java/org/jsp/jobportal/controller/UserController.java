@@ -37,9 +37,9 @@ public class UserController {
 	}
 
 	@PostMapping("/signup")
-	public String signup(User user, @RequestParam MultipartFile doc, ModelMap map)
+	public String signup(User user, ModelMap map)
 			throws IOException, MessagingException {
-		return userService.signup(user, doc, map);
+		return userService.signup(user, map);
 	}
 
 	@PostMapping("/verify-otp")

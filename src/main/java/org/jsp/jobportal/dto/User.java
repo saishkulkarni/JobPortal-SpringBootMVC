@@ -18,22 +18,93 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
-	String fullname;
+	String name;
 	String email;
 	long mobile;
 	String password;
 	String gender;
 	LocalDate dob;
 	String highestdegree;
-	double percentage;
+	double tenthPercentage;
+	double twelthPercentage;
+	double degreePercenatge;
+	double masterPercentage;
 	@Lob
 	@Column(columnDefinition = "MEDIUMBLOB")
 	byte[] resume;
 	int otp;
 	boolean verified;
 	boolean prime;
+	boolean experience;
+	int workExperience;
+	LocalDate noticePeriod;
+	String roleDescription;
+	boolean profileComplete;
 
-	
+	public double getTenthPercentage() {
+		return tenthPercentage;
+	}
+
+	public void setTenthPercentage(double tenthPercentage) {
+		this.tenthPercentage = tenthPercentage;
+	}
+
+	public double getTwelthPercentage() {
+		return twelthPercentage;
+	}
+
+	public void setTwelthPercentage(double twelthPercentage) {
+		this.twelthPercentage = twelthPercentage;
+	}
+
+	public double getDegreePercenatge() {
+		return degreePercenatge;
+	}
+
+	public void setDegreePercenatge(double degreePercenatge) {
+		this.degreePercenatge = degreePercenatge;
+	}
+
+	public double getMasterPercentage() {
+		return masterPercentage;
+	}
+
+	public void setMasterPercentage(double masterPercentage) {
+		this.masterPercentage = masterPercentage;
+	}
+
+	public boolean isExperience() {
+		return experience;
+	}
+
+	public void setExperience(boolean experience) {
+		this.experience = experience;
+	}
+
+	public int getWorkExperience() {
+		return workExperience;
+	}
+
+	public void setWorkExperience(int workExperience) {
+		this.workExperience = workExperience;
+	}
+
+	public LocalDate getNoticePeriod() {
+		return noticePeriod;
+	}
+
+	public void setNoticePeriod(LocalDate noticePeriod) {
+		this.noticePeriod = noticePeriod;
+	}
+
+	public String getRoleDescription() {
+		return roleDescription;
+	}
+
+	public void setRoleDescription(String roleDescription) {
+		this.roleDescription = roleDescription;
+	}
+
 	public List<Notification> getNotifications() {
 		return notifications;
 	}
@@ -88,12 +159,12 @@ public class User {
 		this.verified = verified;
 	}
 
-	public String getFullname() {
-		return fullname;
+	public String getName() {
+		return name;
 	}
 
-	public void setFullname(String fullname) {
-		this.fullname = fullname;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getEmail() {
@@ -142,14 +213,6 @@ public class User {
 
 	public void setHighestdegree(String highestdegree) {
 		this.highestdegree = highestdegree;
-	}
-
-	public double getPercentage() {
-		return percentage;
-	}
-
-	public void setPercentage(double percentage) {
-		this.percentage = percentage;
 	}
 
 	public byte[] getResume() {

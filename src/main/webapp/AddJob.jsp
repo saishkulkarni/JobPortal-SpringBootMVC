@@ -60,6 +60,12 @@ input {
 				<td><input type="text" class="non" name="location"></td>
 			</tr>
 			<tr>
+				<th>Number of Positions :</th>
+			</tr>
+			<tr>
+				<td><input type="number" class="non" name="numberOfPositions"></td>
+			</tr>
+			<tr>
 				<td>
 					<button>
 						<b>ADD</b>

@@ -40,16 +40,14 @@ public class UserService {
 	@Autowired
 	EmailLogic emailLogic;
 
-	public String signup(User user, MultipartFile doc, ModelMap map) throws IOException, MessagingException {
-		byte[] resume = new byte[doc.getInputStream().available()];
-		doc.getInputStream().read(resume);
-		user.setResume(resume);
+	public String signup(User user, ModelMap map) throws IOException, MessagingException {
+		
 		User user1 = userDao.findByEmail(user.getEmail());
 		User user2 = userDao.findByMobile(user.getMobile());
 		if (user1 == null && user2 == null) {
 			int otp = new Random().nextInt(100000, 999999);
 			user.setOtp(otp);
-			 emailLogic.sendOtp(user);
+			// emailLogic.sendOtp(user);
 			userDao.save(user);
 			map.put("pass", "Otp Sent");
 			map.put("id", user.getId());
