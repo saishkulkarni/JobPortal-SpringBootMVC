@@ -19,7 +19,7 @@ public class Job {
 	String title;
 	String skills;
 	String description;
-	String experience;
+	int experience;
 	double ctc;
 	String location;
 	boolean approved;
@@ -96,12 +96,22 @@ public class Job {
 		this.description = description;
 	}
 
-	public String getExperience() {
+	
+
+	public int getExperience() {
 		return experience;
 	}
 
-	public void setExperience(String experience) {
+	public void setExperience(int experience) {
 		this.experience = experience;
+	}
+
+	public int getNumberOfPositions() {
+		return numberOfPositions;
+	}
+
+	public void setNumberOfPositions(int numberOfPositions) {
+		this.numberOfPositions = numberOfPositions;
 	}
 
 	public double getCtc() {

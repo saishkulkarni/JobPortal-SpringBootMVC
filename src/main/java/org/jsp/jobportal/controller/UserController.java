@@ -150,4 +150,41 @@ public class UserController {
 		} else
 			return userService.deleteNotification(user,id, map,session);
 	}
+	
+	@GetMapping("/profile")
+	public String editProfile(ModelMap map,HttpSession session)
+	{
+		User user = (User) session.getAttribute("user");
+		if (user == null) {
+			map.put("fail", "Invalid Session");
+			return "Home";
+		} else{
+			map.put("user", user);
+			return "EditProfile";
+		}
+	}
+	
+	@PostMapping("/profile")
+	public String updateProfile(User user1,@RequestParam MultipartFile res,ModelMap map,HttpSession session) throws IOException
+	{
+		User user = (User) session.getAttribute("user");
+		if (user == null) {
+			map.put("fail", "Invalid Session");
+			return "Home";
+		} else{
+			return userService.updateProfile(user1,user,res,map,session);
+		}
+	}
+	
+	@GetMapping("/check-job/{id}")
+	public String checkJob(@PathVariable int id,HttpSession session, ModelMap map) {
+		User user = (User) session.getAttribute("user");
+		if (user == null) {
+			map.put("fail", "Invalid Session");
+			return "Home";
+		} else{
+			return userService.checkJob(id,user,map,session);
+		}
+	}
+	
 }

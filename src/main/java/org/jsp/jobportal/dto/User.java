@@ -41,6 +41,14 @@ public class User {
 	String roleDescription;
 	boolean profileComplete;
 
+	public boolean isProfileComplete() {
+		return profileComplete;
+	}
+
+	public void setProfileComplete(boolean profileComplete) {
+		this.profileComplete = profileComplete;
+	}
+
 	public double getTenthPercentage() {
 		return tenthPercentage;
 	}

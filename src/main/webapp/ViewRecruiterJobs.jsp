@@ -35,19 +35,29 @@
 			</c:if></td>
 				<td><c:set var="duration"
 						value="${Duration.between(job.postedTime, LocalDateTime.now())}"></c:set>
-					<c:if test="${duration.toDays()==0 }">
-						<c:if test="${duration.toHours()==0 }">
-							<c:if test="${duration.toMinutes()==0 }">
-			${duration.toSeconds()} Seconds ago
-			</c:if>
-						</c:if>
-					</c:if> <c:if test="${duration.toMinutes()>0 }">
-			${duration.toMinutes()} Minutes ago
-			</c:if> <c:if test="${duration.toHours()>0 }">
-			${duration.toHours()} Hours ago
-			</c:if> <c:if test="${duration.toDays()>0 }">
-			${duration.toDays()} Ago
-			</c:if></td>
+				<c:choose>
+				<c:when test="${duration.toDays()==0}">
+					<c:choose>
+					<c:when test="${duration.toHours()==0 }">
+						<c:choose>
+						<c:when test="${duration.toMinutes()==0 }">
+						 ${duration.toSeconds()} Seconds ago
+						</c:when>
+					    <c:otherwise>
+					    ${duration.toMinutes()} Minutes ago
+						</c:otherwise>
+					    </c:choose>
+					</c:when>
+					<c:otherwise>
+				     ${duration.toHours()} Hours ago
+					</c:otherwise>
+					</c:choose>
+				</c:when>
+				<c:otherwise>
+			     ${duration.toDays()} Ago
+				</c:otherwise>
+				</c:choose>
+					</td>
 			</tr>
 		</c:forEach>
 	</table>

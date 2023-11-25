@@ -41,7 +41,7 @@ public class UserService {
 	EmailLogic emailLogic;
 
 	public String signup(User user, ModelMap map) throws IOException, MessagingException {
-		
+
 		User user1 = userDao.findByEmail(user.getEmail());
 		User user2 = userDao.findByMobile(user.getMobile());
 		if (user1 == null && user2 == null) {
@@ -149,53 +149,58 @@ public class UserService {
 		} else {
 			if (job.getCtc() <= 4 || user.isPrime()) {
 				// Logic for Applying
-				boolean applied = false;
-				String status = "";
-				List<JobApplication> applications = user.getApplications();
-				if (applications == null)
-					applications = new ArrayList<JobApplication>();
-				for (JobApplication application : applications) {
-					if (application.getJob().getId() == job.getId()) {
-						status = application.getJobStatus().name();
-						applied = true;
+				if (user.isProfileComplete()) {
+					boolean applied = false;
+					String status = "";
+					List<JobApplication> applications = user.getApplications();
+					if (applications == null)
+						applications = new ArrayList<JobApplication>();
+					for (JobApplication application : applications) {
+						if (application.getJob().getId() == job.getId()) {
+							status = application.getJobStatus().name();
+							applied = true;
+						}
 					}
-				}
-				Notification notification = new Notification();
-				List<Notification> notifications = user.getNotifications();
-				if (notifications == null)
-					notifications = new ArrayList<Notification>();
-				if (applied) {
-					notification.setMessage("Applied Already Current Status - " + status);
-					notification.setTime(LocalDateTime.now());
-					notifications.add(notification);
-					user.setNotifications(notifications);
-					userDao.save(user);
-					map.put("fail", "Applied Already Current Status - " + status);
-					return "UserHome";
+					Notification notification = new Notification();
+					List<Notification> notifications = user.getNotifications();
+					if (notifications == null)
+						notifications = new ArrayList<Notification>();
+					if (applied) {
+						notification.setMessage("Applied Already Current Status - " + status);
+						notification.setTime(LocalDateTime.now());
+						notifications.add(notification);
+						user.setNotifications(notifications);
+						userDao.save(user);
+						map.put("fail", "Applied Already Current Status - " + status);
+						return "UserHome";
+					} else {
+						JobApplication application = new JobApplication();
+						application.setUser(user);
+						application.setAppliedDate(LocalDateTime.now());
+						application.setJobStatus(JobStatus.APPLIED);
+						application.setJob(job);
+
+						applications.add(application);
+						user.setApplications(applications);
+						userDao.save(user);
+
+						List<JobApplication> applications2 = job.getApplications();
+						if (applications2 == null)
+							applications2 = new ArrayList<JobApplication>();
+						applications2.add(application);
+						job.setApplications(applications2);
+						jobDao.save(job);
+						notification.setMessage("Applied Success for the Job: " + application.getJob().getTitle());
+						notification.setTime(LocalDateTime.now());
+						notifications.add(notification);
+						user.setNotifications(notifications);
+						userDao.save(user);
+						session.setAttribute("user", userDao.findById(user.getId()));
+						map.put("pass", "Applied Success");
+						return "UserHome";
+					}
 				} else {
-					JobApplication application = new JobApplication();
-					application.setUser(user);
-					application.setAppliedDate(LocalDateTime.now());
-					application.setJobStatus(JobStatus.APPLIED);
-					application.setJob(job);
-
-					applications.add(application);
-					user.setApplications(applications);
-					userDao.save(user);
-
-					List<JobApplication> applications2 = job.getApplications();
-					if (applications2 == null)
-						applications2 = new ArrayList<JobApplication>();
-					applications2.add(application);
-					job.setApplications(applications2);
-					jobDao.save(job);
-					notification.setMessage("Applied Success for the Job: " + application.getJob().getTitle());
-					notification.setTime(LocalDateTime.now());
-					notifications.add(notification);
-					user.setNotifications(notifications);
-					userDao.save(user);
-					session.setAttribute("user", userDao.findById(user.getId()));
-					map.put("pass", "Applied Success");
+					map.put("fail", "Please Complete Your Profile First");
 					return "UserHome";
 				}
 			} else {
@@ -282,6 +287,41 @@ public class UserService {
 		map.put("pass", "Notification removed Success");
 		return viewNotifications(user, map);
 
+	}
+
+	public String updateProfile(User user1, User user, MultipartFile res, ModelMap map, HttpSession session)
+			throws IOException {
+		byte[] resume = new byte[res.getInputStream().available()];
+		res.getInputStream().read(resume);
+		user.setTwelthPercentage(user1.getTwelthPercentage());
+		user.setTenthPercentage(user1.getTenthPercentage());
+		user.setDegreePercenatge(user1.getDegreePercenatge());
+		user.setDob(user1.getDob());
+		user.setName(user.getName());
+		user.setGender(user1.getGender());
+		user.setResume(resume);
+		user.setProfileComplete(true);
+		userDao.save(user);
+		session.setAttribute("user", user);
+		map.put("pass", "Profile Updated Success");
+		map.put("user", user);
+		return "UserHome";
+
+	}
+
+	public String checkJob(int id, User user, ModelMap map, HttpSession session) {
+		Job job = jobDao.findById(id);
+		if (job == null) {
+			map.put("fail", "Something went Wrong");
+			return "Home";
+		} else {
+			if (job.getExperience() < 1)
+				return applyJob(id, user, map, session);
+			else {
+				map.put("id", id);
+				return "ExperiencePage";
+			}
+		}
 	}
 
 }
