@@ -10,11 +10,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<form action="" method="post">
+	<form action="/user/experience" method="post">
 		<input type="text" name="id" value="${id}" hidden=""> Are you
 		Experienced : <input type="radio" name="experience" value="yes">Yes
 		<input type="radio" name="experience" value="no">No <br>
-		<button>Apply</button>	
+		<button>Apply</button>
 		<button type="reset">Cancel</button>
 	</form>
 </body>

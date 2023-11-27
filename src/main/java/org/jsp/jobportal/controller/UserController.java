@@ -1,6 +1,7 @@
 package org.jsp.jobportal.controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import org.jsp.jobportal.dto.User;
 import org.jsp.jobportal.service.UserService;
@@ -37,8 +38,7 @@ public class UserController {
 	}
 
 	@PostMapping("/signup")
-	public String signup(User user, ModelMap map)
-			throws IOException, MessagingException {
+	public String signup(User user, ModelMap map) throws IOException, MessagingException {
 		return userService.signup(user, map);
 	}
 
@@ -95,7 +95,7 @@ public class UserController {
 			map.put("fail", "Invalid Session");
 			return "Home";
 		} else
-			return userService.applyJob(id, user, map,session);
+			return userService.applyJob(id, user, map, session);
 	}
 
 	@GetMapping("/buy-prime")
@@ -109,18 +109,18 @@ public class UserController {
 	}
 
 	@PostMapping("/payment/{id}")
-	public String paymentDone(@PathVariable int id,@RequestParam String razorpay_payment_id, ModelMap map, HttpSession session) {
+	public String paymentDone(@PathVariable int id, @RequestParam String razorpay_payment_id, ModelMap map,
+			HttpSession session) {
 		User user = (User) session.getAttribute("user");
 		if (user == null) {
 			map.put("fail", "Invalid Session");
 			return "Home";
 		} else
-			return userService.paymentDone(id,user,session,razorpay_payment_id, map);
+			return userService.paymentDone(id, user, session, razorpay_payment_id, map);
 	}
-	
+
 	@GetMapping("/view-application")
-	public String viewMyApplications(HttpSession session,ModelMap map)
-	{
+	public String viewMyApplications(HttpSession session, ModelMap map) {
 		User user = (User) session.getAttribute("user");
 		if (user == null) {
 			map.put("fail", "Invalid Session");
@@ -128,10 +128,9 @@ public class UserController {
 		} else
 			return userService.viewMyApplications(user, map);
 	}
-	
+
 	@GetMapping("/notifications")
-	public String getNotifications(HttpSession session,ModelMap map)
-	{
+	public String getNotifications(HttpSession session, ModelMap map) {
 		User user = (User) session.getAttribute("user");
 		if (user == null) {
 			map.put("fail", "Invalid Session");
@@ -139,52 +138,74 @@ public class UserController {
 		} else
 			return userService.viewNotifications(user, map);
 	}
-	
+
 	@GetMapping("/delete-notification/{id}")
-	public String deleteNotification(@PathVariable int id,ModelMap map,HttpSession session)
-	{
+	public String deleteNotification(@PathVariable int id, ModelMap map, HttpSession session) {
 		User user = (User) session.getAttribute("user");
 		if (user == null) {
 			map.put("fail", "Invalid Session");
 			return "Home";
 		} else
-			return userService.deleteNotification(user,id, map,session);
+			return userService.deleteNotification(user, id, map, session);
 	}
-	
+
 	@GetMapping("/profile")
-	public String editProfile(ModelMap map,HttpSession session)
-	{
+	public String editProfile(ModelMap map, HttpSession session) {
 		User user = (User) session.getAttribute("user");
 		if (user == null) {
 			map.put("fail", "Invalid Session");
 			return "Home";
-		} else{
+		} else {
 			map.put("user", user);
 			return "EditProfile";
 		}
 	}
-	
+
 	@PostMapping("/profile")
-	public String updateProfile(User user1,@RequestParam MultipartFile res,ModelMap map,HttpSession session) throws IOException
-	{
+	public String updateProfile(User user1, @RequestParam MultipartFile res, ModelMap map, HttpSession session)
+			throws IOException {
 		User user = (User) session.getAttribute("user");
 		if (user == null) {
 			map.put("fail", "Invalid Session");
 			return "Home";
-		} else{
-			return userService.updateProfile(user1,user,res,map,session);
+		} else {
+			return userService.updateProfile(user1, user, res, map, session);
 		}
 	}
-	
+
 	@GetMapping("/check-job/{id}")
-	public String checkJob(@PathVariable int id,HttpSession session, ModelMap map) {
+	public String checkJob(@PathVariable int id, HttpSession session, ModelMap map) {
 		User user = (User) session.getAttribute("user");
 		if (user == null) {
 			map.put("fail", "Invalid Session");
 			return "Home";
-		} else{
-			return userService.checkJob(id,user,map,session);
+		} else {
+			return userService.checkJob(id, user, map, session);
 		}
 	}
-	
+
+	@PostMapping("/experience")
+	public String checkExperience(@RequestParam String experience, @RequestParam int id, HttpSession session,
+			ModelMap map) {
+		User user = (User) session.getAttribute("user");
+		if (user == null) {
+			map.put("fail", "Invalid Session");
+			return "Home";
+		} else {
+			return userService.checkExperience(experience, id, user, map, session);
+		}
+	}
+
+	@PostMapping("/experience/apply")
+	public String applyJobExperience(HttpSession session, ModelMap map, @RequestParam int id, @RequestParam int years,
+			@RequestParam String description, @RequestParam LocalDate notice) {
+		User user = (User) session.getAttribute("user");
+		if (user == null) {
+			map.put("fail", "Invalid Session");
+			return "Home";
+		} else {
+			return userService.applyForExperience(id, years, description,notice, user, map, session);
+		}
+	}
+
 }

@@ -1,6 +1,7 @@
 package org.jsp.jobportal.service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -320,6 +321,37 @@ public class UserService {
 			else {
 				map.put("id", id);
 				return "ExperiencePage";
+			}
+		}
+	}
+
+	public String checkExperience(String experience, int id, User user, ModelMap map, HttpSession session) {
+		if (experience.equals("no")) {
+			map.put("fail", "Not Eligible for This Job");
+			return getJobs(map);
+		} else {
+			map.put("id", id);
+			return "ExperienceDetails";
+		}
+	}
+
+	public String applyForExperience(int id, int years, String description, LocalDate notice, User user, ModelMap map,
+			HttpSession session) {
+		Job job = jobDao.findById(id);
+		if (job == null) {
+			map.put("fail", "Something went Wrong");
+			return "Home";
+		} else {
+			if (job.getExperience() > years) {
+				map.put("fail", "Not Eligible for This Job");
+				return getJobs(map);
+			} else {
+				user.setWorkExperience(years);
+				user.setNoticePeriod(notice);
+				user.setRoleDescription(description);
+				userDao.save(user);
+				session.setAttribute("user", user);
+				return applyJob(id, user, map, session);
 			}
 		}
 	}
