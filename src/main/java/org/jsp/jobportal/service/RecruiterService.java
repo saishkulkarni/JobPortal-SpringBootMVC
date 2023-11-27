@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -52,7 +51,7 @@ public class RecruiterService {
 			int otp = new Random().nextInt(100000, 999999);
 			recruiter.setOtp(otp);
 			recruiter.setOtpCreatedTime(LocalDateTime.now());
-			//emailLogic.sendOtp(recruiter);
+			// emailLogic.sendOtp(recruiter);
 			recruiterDao.save(recruiter);
 			map.put("pass", "Otp Sent");
 			map.put("id", recruiter.getId());
@@ -69,24 +68,22 @@ public class RecruiterService {
 			map.put("fail", "Invalid ID");
 			return "Home";
 		} else {
-		if(Duration.between(recruiter.getOtpCreatedTime(), LocalDateTime.now()).getSeconds()<30)
-		{
-			if (recruiter.getOtp() == otp) {
-				recruiter.setVerfied(true);
-				recruiterDao.save(recruiter);
-				map.put("pass", "Account verified Success");
-				return "RecruiterLogin";
+			if (Duration.between(recruiter.getOtpCreatedTime(), LocalDateTime.now()).getSeconds() < 30) {
+				if (recruiter.getOtp() == otp) {
+					recruiter.setVerfied(true);
+					recruiterDao.save(recruiter);
+					map.put("pass", "Account verified Success");
+					return "RecruiterLogin";
+				} else {
+					map.put("fail", "Invalid OTP");
+					map.put("id", id);
+					return "RecruiterOtp";
+				}
 			} else {
-				map.put("fail", "Invalid OTP");
+				map.put("fail", "Otp Time Out");
 				map.put("id", id);
 				return "RecruiterOtp";
 			}
-		}
-		else {
-			map.put("fail", "Otp Time Out");
-			map.put("id", id);
-			return "RecruiterOtp";
-		}
 		}
 	}
 
@@ -249,7 +246,10 @@ public class RecruiterService {
 				notifications = new ArrayList<Notification>();
 			notifications.add(notification);
 			user.setNotifications(notifications);
-
+			// Updating number of positions
+			Job job = application.getJob();
+			job.setNumberOfPositions(job.getNumberOfPositions() - 1);
+			jobDao.save(job);
 			userDao.save(user);
 			map.put("pass", "Selected Success");
 			session.setAttribute("recruiter", recruiterDao.findById(id));
@@ -307,7 +307,7 @@ public class RecruiterService {
 			recruiter.setOtp(otp);
 			recruiter.setOtpCreatedTime(LocalDateTime.now());
 			recruiterDao.save(recruiter);
-		//	emailLogic.sendOtp(recruiter);
+			// emailLogic.sendOtp(recruiter);
 			map.put("pass", "Otp Sent Againx");
 			map.put("id", recruiter.getId());
 			return "RecruiterOtp";

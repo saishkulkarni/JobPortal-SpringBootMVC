@@ -19,6 +19,7 @@ ${fail}${pass}
 			<th>Salary Package</th>
 			<th>Experience</th>
 			<th>Location</th>
+			<th>Number of Positions</th>
 			<th>Posted</th>
 			<th>Apply</th>
 		</tr>
@@ -29,6 +30,7 @@ ${fail}${pass}
 				<td>${job.ctc}</td>
 				<td>${job.experience}</td>
 				<td>${job.location}</td>
+				<td>${job.numberOfPositions}
 				<td><c:set var="duration"
 						value="${Duration.between(job.postedTime, LocalDateTime.now())}"></c:set>
 					<c:choose>

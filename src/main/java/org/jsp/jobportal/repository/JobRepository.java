@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface JobRepository extends JpaRepository<Job, Integer>
 {
 
-	List<Job> findByApprovedTrue();
+	List<Job> findByApprovedTrueAndNumberOfPositionsGreaterThan(int n);
 
 }

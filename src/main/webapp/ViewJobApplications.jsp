@@ -23,7 +23,7 @@
 
 			<c:forEach var="application" items="${applications}">
 				<tr>
-					<th>${application.user.fullname }</th>
+					<th>${application.user.name }</th>
 					<th>${application.user.mobile }</th>
 					<th>${application.job.title }</th>
 					<th><a href="/recruiter/resume/${application.user.id}"><button>Download Resume</button></a></th>

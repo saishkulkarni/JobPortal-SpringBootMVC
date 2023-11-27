@@ -30,7 +30,7 @@ public class JobDao {
 	}
 
 	public List<Job> fetchAllApproved() {
-		return jobRepository.findByApprovedTrue();
+		return jobRepository.findByApprovedTrueAndNumberOfPositionsGreaterThan(0);
 	}
 
 	public JobApplication findApplicationById(int id) {
