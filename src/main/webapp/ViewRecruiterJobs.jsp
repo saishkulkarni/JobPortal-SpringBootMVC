@@ -54,7 +54,7 @@
 					</c:choose>
 				</c:when>
 				<c:otherwise>
-			     ${duration.toDays()} Ago
+			     ${duration.toDays()} Days Ago
 				</c:otherwise>
 				</c:choose>
 					</td>
