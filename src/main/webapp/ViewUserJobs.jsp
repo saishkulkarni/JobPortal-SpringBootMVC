@@ -17,6 +17,7 @@ ${fail}${pass}
 			<th>Job Role</th>
 			<th>Job Description</th>
 			<th>Salary Package</th>
+			<th>Skills Required</th>
 			<th>Experience</th>
 			<th>Location</th>
 			<th>Number of Positions</th>
@@ -28,6 +29,7 @@ ${fail}${pass}
 				<td>${job.title }</td>
 				<td>${job.description}</td>
 				<td>${job.ctc}</td>
+				<th>${job.skills}</th>
 				<td>${job.experience}</td>
 				<td>${job.location}</td>
 				<td>${job.numberOfPositions}

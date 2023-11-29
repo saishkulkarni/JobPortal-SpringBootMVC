@@ -51,7 +51,7 @@ public class RecruiterService {
 			int otp = new Random().nextInt(100000, 999999);
 			recruiter.setOtp(otp);
 			recruiter.setOtpCreatedTime(LocalDateTime.now());
-			// emailLogic.sendOtp(recruiter);
+			emailLogic.sendOtp(recruiter);
 			recruiterDao.save(recruiter);
 			map.put("pass", "Otp Sent");
 			map.put("id", recruiter.getId());
